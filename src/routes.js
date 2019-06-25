@@ -10,6 +10,7 @@ import SignIn from './components/signin';
 
 import Dashboard from './components/admin/Dashboard';
 import AdminMatches from './components/admin/matches/index';
+import AddEditMatch from './components/admin/matches/addEditMatch';
 
 const Routes = (props) => {
 
@@ -20,6 +21,7 @@ const Routes = (props) => {
                 <Switch>
                     <PrivateRoute {...props} path='/dashboard' exact component={Dashboard}/>
                     <PrivateRoute {...props} path='/admin_matches' exact component={AdminMatches}/>
+                    <PrivateRoute {...props} path='/admin_matches/edit_match/:id' exact component={AddEditMatch}/>
                     <PublicRoute {...props} restricted={false} path='/' exact component={Home}/>
                     <PublicRoute {...props} restricted={true} path='/sign_in' exact component={SignIn}/>
                 </Switch>

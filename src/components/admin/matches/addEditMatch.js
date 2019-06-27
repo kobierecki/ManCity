@@ -4,6 +4,9 @@ import AdminLayout from '../../../HoC/Admin_layout';
 import FormField from '../../UI/formFields';
 import {validate} from "../../UI/misc";
 
+import {firebaseMatches, firebaseTeams, firebaseData} from "../../../firebase";
+import {firebaseLooper} from "../../UI/misc";
+
 class AddEditMatch extends Component {
 
     state = {
@@ -162,6 +165,42 @@ class AddEditMatch extends Component {
             }
         }
     };
+
+    updateForm(element) {
+        const newFormData = {...this.state.formdata};
+        const newElement = {...newFormData[element.id]};
+
+        newElement.value = element.event.target.value;
+
+        let validData = validate(newElement);
+        newElement.valid = validData[0];
+        newElement.validationMessage = validData[1];
+
+        newFormData[element.id] = newElement;
+
+        this.setState({
+            formError: false,
+            formdata: newFormData
+        })
+    }
+
+    componentDidMount(){
+        const matchId = this.props.match.params.id;
+        const getTeams = (match, type) => {
+            firebaseTeams.once('value').then(snapshot => {
+                const teams = firebaseLooper(snapshot);
+            })
+        };
+        if(!matchId){
+            //Add match
+        } else {
+            firebaseData.ref(`matches/${matchId}`).once('value')
+                .then((snapshot) => {
+                    const match = snapshot.val();
+                    getTeams(match,'Edit Match');
+                })
+        }
+    }
 
     render() {
         return (

@@ -18,9 +18,12 @@ firebase.initializeApp(firebaseConfig);
 const firebaseData = firebase.database();
 const firebaseMatches = firebaseData.ref('matches');
 const firebasePromotions = firebaseData.ref('promotions');
+const firebaseTeams = firebaseData.ref('teams');
 
 export {
     firebase,
     firebaseMatches,
-    firebasePromotions
+    firebasePromotions,
+    firebaseTeams,
+    firebaseData
 }

@@ -1,17 +1,17 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import AdminLayout from '../../../HoC/Admin_layout';
 
 import FormField from '../../UI/formFields';
-import {validate} from "../../UI/misc";
+import { validate } from "../../UI/misc";
 
-import {firebaseMatches, firebaseTeams, firebaseData} from "../../../firebase";
-import {firebaseLooper} from "../../UI/misc";
+import { firebaseMatches, firebaseTeams, firebaseData } from "../../../firebase";
+import { firebaseLooper } from "../../UI/misc";
 
 class AddEditMatch extends Component {
 
     state = {
         matchId: '',
-        formType: '',
+        formType: 'Edit Match',
         formError: false,
         formSuccess: '',
         teams: [],
@@ -131,10 +131,10 @@ class AddEditMatch extends Component {
                     name: 'select_result',
                     type: 'select',
                     options: [
-                        {key:'W',value:'W'},
-                        {key:'D',value:'D'},
-                        {key:'L',value:'L'},
-                        {key:'n/a',value:'n/a'}
+                        { key: 'W', value: 'W' },
+                        { key: 'D', value: 'D' },
+                        { key: 'L', value: 'L' },
+                        { key: 'n/a', value: 'n/a' }
                     ]
                 },
                 validation: {
@@ -152,8 +152,8 @@ class AddEditMatch extends Component {
                     name: 'select_played',
                     type: 'select',
                     options: [
-                        {key:'Yes',value:'Yes'},
-                        {key:'No',value:'No'},
+                        { key: 'Yes', value: 'Yes' },
+                        { key: 'No', value: 'No' },
                     ]
                 },
                 validation: {
@@ -167,8 +167,8 @@ class AddEditMatch extends Component {
     };
 
     updateForm(element) {
-        const newFormData = {...this.state.formdata};
-        const newElement = {...newFormData[element.id]};
+        const newFormData = { ...this.state.formdata };
+        const newElement = { ...newFormData[element.id] };
 
         newElement.value = element.event.target.value;
 
@@ -184,23 +184,57 @@ class AddEditMatch extends Component {
         })
     }
 
-    componentDidMount(){
+    updateFields(match, teamOptions, teams, type, matchId) {
+        const newFormData = {
+            ...this.state.formdata
+        }
+
+        for (let key in newFormData) {
+            if (match) {
+                newFormData[key].value = match[key];
+                newFormData[key].valid = true;
+            }
+            if (key === 'local' || key === 'away') {
+                newFormData[key].config.options = teamOptions
+            }
+        }
+
+        this.setState({
+            matchId,
+            formType: type,
+            formdata: newFormData,
+            teams,
+        })
+    }
+
+    componentDidMount() {
         const matchId = this.props.match.params.id;
         const getTeams = (match, type) => {
             firebaseTeams.once('value').then(snapshot => {
                 const teams = firebaseLooper(snapshot);
+                const teamOptions = [];
+
+                snapshot.forEach((childSnapshot) => {
+                    teamOptions.push({
+                        key: childSnapshot.val().shortName,
+                        value: childSnapshot.val().shortName
+                    })
+                })
+                this.updateFields(match, teamOptions, teams, type, matchId);
             })
         };
-        if(!matchId){
+        if (!matchId) {
             //Add match
         } else {
             firebaseData.ref(`matches/${matchId}`).once('value')
                 .then((snapshot) => {
                     const match = snapshot.val();
-                    getTeams(match,'Edit Match');
+                    getTeams(match, 'Edit Match');
                 })
         }
     }
+
+
 
     render() {
         return (

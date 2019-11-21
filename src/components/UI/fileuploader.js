@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { firebase } from '../../firebase';
 import FileUploader from 'react-firebase-file-uploader';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { isNumericLiteral, file } from '@babel/types';
 
 class Fileuploader extends Component {
 
@@ -35,9 +34,19 @@ class Fileuploader extends Component {
         firebase.storage().ref(this.props.dir)
             .child(filename).getDownloadURL()
             .then(url => {
-                console.log(url)
                 this.setState({ fileURL: url })
             })
+
+        this.props.filename(filename);
+    }
+
+    uploadAgain = () => {
+        this.setState({
+            name: '',
+            isUploading: false,
+            fileURL: '',
+        });
+        this.props.resetImage();
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -88,7 +97,7 @@ class Fileuploader extends Component {
                             alt={this.state.name}
                         />
                         <div className="remove" onClick={() => this.uploadAgain()}>
-
+                            Remove
                         </div>
                     </div>
                     : null

@@ -1,7 +1,7 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ListItem from '@material-ui/core/ListItem';
-import {firebase} from '../../../firebase';
+import { firebase } from '../../../firebase';
 
 const AdminNav = () => {
 
@@ -20,7 +20,7 @@ const AdminNav = () => {
         },
         {
             title: 'Add Players',
-            linkTo: '/admin_players/edit_player'
+            linkTo: '/admin_players/add_player'
         }
     ];
 

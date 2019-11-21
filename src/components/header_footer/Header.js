@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import ToolBar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 
-import {Link} from  'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import {CityLogo} from "../UI/icons";
+import { CityLogo } from "../UI/icons";
 
 class Header extends Component {
     render() {
@@ -19,8 +19,8 @@ class Header extends Component {
                     borderBottom: '2px solid #00285e'
                 }}
             >
-                <ToolBar style={{display:'flex'}}>
-                    <div style={{flexGrow: 1}}>
+                <ToolBar style={{ display: 'flex' }}>
+                    <div style={{ flexGrow: 1 }}>
                         <div className='header_logo'>
                             <CityLogo
                                 link={true}
@@ -30,10 +30,10 @@ class Header extends Component {
                             />
                         </div>
                     </div>
-                    <Link to='/the_team'>
+                    <Link to='/team'>
                         <Button color='inherit'>The Team</Button>
                     </Link>
-                    <Link to='/the_matches'>
+                    <Link to='/matches'>
                         <Button color='inherit'>Matches</Button>
                     </Link>
                 </ToolBar>
